@@ -5,5 +5,9 @@
     <string name="button_save">Save</string>
     <string name="hint_word">Word…</string>
     <string name="empty_not_saved">Word not saved because it is empty.</string>
+    <string name="to_do">To-do</string>
+    <string name="datePlaceholder">MM/DD/YYYY</string>
+    <string name="mm_dd_yyyy_hh_mm">MM/DD/YYYY HH:MM</string>
+    <string name="edit_task_header_title">Edit task</string>
 
 </resources>

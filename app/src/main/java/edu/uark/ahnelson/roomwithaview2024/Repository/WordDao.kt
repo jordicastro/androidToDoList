@@ -8,6 +8,9 @@ import androidx.room.Query
 import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 
+// a Dao is an interface that defines the database operations
+// update, insert, delete, and query
+// TODO: add delete
 @Dao
 interface WordDao {
 

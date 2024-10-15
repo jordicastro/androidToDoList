@@ -15,6 +15,8 @@ import edu.uark.ahnelson.roomwithaview2024.NewWordActivity.NewWordActivity
 import edu.uark.ahnelson.roomwithaview2024.R
 import edu.uark.ahnelson.roomwithaview2024.WordsApplication
 
+// main activity class contains
+
 class MainActivity : AppCompatActivity() {
 
     //ViewModel object to communicate between Activity and repository
@@ -25,7 +27,9 @@ class MainActivity : AppCompatActivity() {
     Callback function passed through to RecyclerViewItems to launch
     A new activity based on id
      @param id id of the item that is clicked
+        called when an item is clicked -> intent to NewWordActivity view with the id
      */
+    // **this method is passed into wordlistadapter as a callback. When an item is clicked, the adapter calls this method with the id of the item
     fun launchNewWordActivity(id:Int){
         val secondActivityIntent = Intent(this, NewWordActivity::class.java)
         secondActivityIntent.putExtra("EXTRA_ID",id)

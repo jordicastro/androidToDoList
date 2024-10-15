@@ -3,25 +3,128 @@
     android:id="@+id/main"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="18dp"
+    >
 
-    <EditText
-        android:id="@+id/edit_word"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="@dimen/min_height"
-        android:fontFamily="sans-serif-light"
-        android:hint="@string/hint_word"
-        android:inputType="textAutoComplete"
-        android:layout_margin="@dimen/big_padding"
-        android:textSize="18sp" />
+        android:layout_height="64dp"
+        android:background="@drawable/rounded_corners"
+        android:layout_marginBottom="16dp"
+        >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:fontFamily="monospace"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:text="@string/edit_task_header_title"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="64dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="16dp"
+
+        >
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            />
+        <EditText
+            android:id="@+id/editTextTask"
+            android:layout_width="256dp"
+            android:layout_height="67dp"
+            android:layout_margin="@dimen/big_padding"
+            android:fontFamily="sans-serif-light"
+            android:hint="@string/to_do"
+            android:inputType="textAutoComplete"
+            android:minHeight="@dimen/min_height"
+            android:textSize="24sp" />
+
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:fontFamily="monospace"
+        android:textSize="18sp"
+        android:text="Description"
+        android:layout_marginBottom="12dp"
+        />
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="256dp"
+        android:background="@drawable/border"
+        android:orientation="vertical"
+        >
+
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:fontFamily="monospace"
+            android:textSize="18sp"
+            android:text="hi"
+            android:padding="24dp"
+            android:gravity="top"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="128dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:weightSum="2"
+        >
+
+        <TextView
+            android:id="@+id/showDate"
+            android:layout_width="16sp"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:layout_weight="1"
+            android:textSize="18sp"
+            />
+
+
+        <Button
+            android:id="@+id/buttonDate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Due Date"
+            android:background="@drawable/rounded_button"
+            android:textColor="@color/buttonLabel"
+            android:textStyle="bold"
+            android:textSize="14dp"
+            />
+
+    </LinearLayout>
+
+
+
+
+
 
     <Button
         android:id="@+id/button_save"
-        android:layout_width="match_parent"
+        android:layout_width="156dp"
         android:layout_height="wrap_content"
-        android:text="@string/button_save"
+        android:layout_gravity="center"
         android:layout_margin="@dimen/big_padding"
+        android:background="@drawable/rounded_corners"
+        android:backgroundTint="@color/blue_500"
+        android:gravity="center"
+        android:text="@string/button_save"
         android:textColor="@color/buttonLabel" />
 
 </LinearLayout>

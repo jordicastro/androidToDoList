@@ -12,26 +12,26 @@ import kotlinx.coroutines.launch
 // it contains the general methods to initialize and get the database
 
 // Annotates class to be a Room Database with a table (entity) of the Word class
-@Database(entities = arrayOf(Word::class), version = 1, exportSchema = false)
-public abstract class WordRoomDatabase : RoomDatabase() {
+@Database(entities = arrayOf(Task::class), version = 1, exportSchema = false)
+public abstract class TaskRoomDatabase : RoomDatabase() {
 
-    abstract fun wordDao(): WordDao
+    abstract fun taskDao(): TaskDao
 
     companion object {
         // Singleton prevents multiple instances of database opening at the
         // same time.
         @Volatile
-        private var INSTANCE: WordRoomDatabase? = null
+        private var INSTANCE: TaskRoomDatabase? = null
 
-        fun getDatabase(context: Context, scope:CoroutineScope): WordRoomDatabase {
+        fun getDatabase(context: Context, scope:CoroutineScope): TaskRoomDatabase {
             // if the INSTANCE is not null, then return it,
             // if it is, then create the database
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
-                    WordRoomDatabase::class.java,
-                    "word_database"
-                ).addCallback(WordDatabaseCallback(scope))
+                    TaskRoomDatabase::class.java,
+                    "task_database"
+                ).addCallback(TaskDatabaseCallback(scope))
                     .build()
                 INSTANCE = instance
                 // return instance
@@ -39,7 +39,7 @@ public abstract class WordRoomDatabase : RoomDatabase() {
             }
         }
     }
-    private class WordDatabaseCallback(
+    private class TaskDatabaseCallback(
         private val scope: CoroutineScope
     ) : Callback() {
 
@@ -47,20 +47,22 @@ public abstract class WordRoomDatabase : RoomDatabase() {
             super.onCreate(db)
             INSTANCE?.let { database ->
                 scope.launch {
-                    populateDatabase(database.wordDao())
+                    populateDatabase(database.taskDao())
                 }
             }
         }
 
-        suspend fun populateDatabase(wordDao: WordDao) {
+        suspend fun populateDatabase(taskDao: TaskDao) {
             // Delete all content here.
-            wordDao.deleteAll()
+            taskDao.deleteAll()
 
-            // Add sample words.
-            var word = Word(null,"Hello")
-            wordDao.insert(word)
-            word = Word(null,"World!")
-            wordDao.insert(word)
+            // add sample tasks
+            // tasks are of type
+            // id, taskName, taskDescription, taskDueDate, taskStatus
+            var task = Task(null, "task1", "description1", "10/01/24", false)
+            taskDao.insert(task)
+            task = Task(null, "task2", "description2", "10/02/24", true)
+            taskDao.insert(task)
 
             // TODO: Add your own words!
         }
