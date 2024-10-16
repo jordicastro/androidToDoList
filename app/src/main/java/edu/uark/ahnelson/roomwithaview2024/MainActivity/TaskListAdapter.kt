@@ -9,10 +9,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import edu.uark.ahnelson.roomwithaview2024.NewWordActivity.NewWordActivity
 import edu.uark.ahnelson.roomwithaview2024.R
 import edu.uark.ahnelson.roomwithaview2024.Repository.Task
-import edu.uark.ahnelson.roomwithaview2024.Repository.Word
 
 /**
 WordListAdapter class

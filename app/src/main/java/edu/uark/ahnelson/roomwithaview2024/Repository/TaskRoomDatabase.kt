@@ -59,9 +59,9 @@ public abstract class TaskRoomDatabase : RoomDatabase() {
             // add sample tasks
             // tasks are of type
             // id, taskName, taskDescription, taskDueDate, taskStatus
-            var task = Task(null, "task1", "description1", "10/01/24", false)
+            var task = Task(null, "task1", "description1", "10/01/24", true)
             taskDao.insert(task)
-            task = Task(null, "task2", "description2", "10/02/24", true)
+            task = Task(null, "task2", "description2", "10/02/24", false)
             taskDao.insert(task)
 
             // TODO: Add your own words!

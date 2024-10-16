@@ -7,8 +7,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import edu.uark.ahnelson.roomwithaview2024.Repository.Task
 import edu.uark.ahnelson.roomwithaview2024.Repository.TaskRepository
-import edu.uark.ahnelson.roomwithaview2024.Repository.Word
-import edu.uark.ahnelson.roomwithaview2024.Repository.WordRepository
 import kotlinx.coroutines.launch
 
 class NewTaskViewModel(private val repository: TaskRepository) : ViewModel() {

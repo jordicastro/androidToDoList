@@ -3,8 +3,6 @@ package edu.uark.ahnelson.roomwithaview2024
 import android.app.Application
 import edu.uark.ahnelson.roomwithaview2024.Repository.TaskRepository
 import edu.uark.ahnelson.roomwithaview2024.Repository.TaskRoomDatabase
-import edu.uark.ahnelson.roomwithaview2024.Repository.WordRepository
-import edu.uark.ahnelson.roomwithaview2024.Repository.WordRoomDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 

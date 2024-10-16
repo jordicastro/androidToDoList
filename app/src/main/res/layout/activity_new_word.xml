@@ -34,6 +34,7 @@
         >
 
         <CheckBox
+            android:id="@+id/checkboxTaskCompleted"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             />
@@ -64,14 +65,16 @@
         android:layout_height="256dp"
         android:background="@drawable/border"
         android:orientation="vertical"
+        android:layout_marginBottom="36dp"
         >
 
         <EditText
+            android:id="@+id/editTextDescription"
             android:layout_width="fill_parent"
             android:layout_height="match_parent"
             android:fontFamily="monospace"
             android:textSize="18sp"
-            android:text="hi"
+            android:text=""
             android:padding="24dp"
             android:gravity="top"
             />
@@ -80,19 +83,21 @@
 
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="128dp"
+        android:layout_height="50dp"
         android:orientation="horizontal"
         android:gravity="center_vertical"
         android:weightSum="2"
+        android:layout_marginBottom="8dp"
         >
 
         <TextView
             android:id="@+id/showDate"
-            android:layout_width="16sp"
+            android:layout_width="24sp"
+            android:textStyle="bold"
             android:layout_height="wrap_content"
             android:fontFamily="monospace"
             android:layout_weight="1"
-            android:textSize="18sp"
+            android:textSize="24sp"
             />
 
 
@@ -104,8 +109,42 @@
             android:text="Due Date"
             android:background="@drawable/rounded_button"
             android:textColor="@color/buttonLabel"
-            android:textStyle="bold"
             android:textSize="14dp"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:weightSum="2"
+        android:layout_marginBottom="8dp"
+        >
+
+        <TextView
+
+            android:id="@+id/showTime"
+            android:textStyle="bold"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:layout_weight="1"
+            android:layout_width="24sp"
+            android:textSize="24sp"
+            />
+
+
+        <Button
+            android:id="@+id/buttonTime"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Time"
+            android:background="@drawable/rounded_button"
+            android:textColor="@color/buttonLabel"
+            android:textStyle="bold"
+            android:textSize="14sp"
             />
 
     </LinearLayout>
@@ -125,7 +164,8 @@
         android:backgroundTint="@color/blue_500"
         android:gravity="center"
         android:text="@string/button_save"
-        android:textColor="@color/buttonLabel" />
+        android:textColor="@color/buttonLabel"
+        />
 
 </LinearLayout>
 

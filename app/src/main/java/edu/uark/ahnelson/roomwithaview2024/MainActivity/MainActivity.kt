@@ -12,10 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import edu.uark.ahnelson.roomwithaview2024.NewWordActivity.NewTaskActivity
-import edu.uark.ahnelson.roomwithaview2024.NewWordActivity.NewWordActivity
 import edu.uark.ahnelson.roomwithaview2024.R
 import edu.uark.ahnelson.roomwithaview2024.TasksApplication
-import edu.uark.ahnelson.roomwithaview2024.WordsApplication
 
 // main activity class contains
 
