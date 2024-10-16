@@ -37,7 +37,7 @@ class NewTaskActivity : AppCompatActivity() {
     private lateinit var editTextDescription: EditText
     private lateinit var checkboxTaskCompleted: CheckBox
     private lateinit var task: Task
-    val newTaskViewModel: NewTaskViewModel by viewModels {
+    private val newTaskViewModel: NewTaskViewModel by viewModels {
         NewTaskViewModelFactory((application as TasksApplication).repository)
     }
 
@@ -81,7 +81,7 @@ class NewTaskActivity : AppCompatActivity() {
         val id = intent.getIntExtra("EXTRA_ID",-1)
         //If it doesn't exist, create a new Word object
         if(id == -1){
-            task = Task(null,"", "", "", false)
+            task = Task(null,"", "", "", "", false)
         }else{
             //Otherwise, start the viewModel with the id
             //And begin observing the word to set the text in the
@@ -92,6 +92,7 @@ class NewTaskActivity : AppCompatActivity() {
                     editTextTask.setText(it.taskName)
                     editTextDescription.setText(it.taskDescription)
                     showDate.text = it.taskDateDue
+                    showTime.text = convertToAMPM(it.taskTimeDue)
 
                     // check box on or off
                     checkboxTaskCompleted.isChecked = !it.taskStatus
@@ -118,11 +119,9 @@ class NewTaskActivity : AppCompatActivity() {
 
 
                 if(newTaskViewModel.task.value?.taskId == null){
-                    newTaskViewModel.insert(Task(null, taskName, taskDescription, taskDueDate, taskStatus ))
-                    // newTaskViewModel.insert(Task(null, task))
+                    newTaskViewModel.insert(Task(null, taskName, taskDescription, taskDueDate, taskDueTime, taskStatus ))
                 }else{
                     newTaskViewModel.task.value?.let { it1 -> newTaskViewModel.update(it1) }
-                    // newTaskViewModel.task
                 }
                 //replyIntent.putExtra(EXTRA_REPLY, word)
                 setResult(Activity.RESULT_OK)
@@ -131,6 +130,17 @@ class NewTaskActivity : AppCompatActivity() {
             finish()
         }
 
+    }
+
+    private fun convertToAMPM(taskTimeDue: String): CharSequence? {
+        // taskTimeDue is in 24 hour format
+        // convert to 12 hour format
+        val time = taskTimeDue.split(":")
+        val hour = time[0].toInt()
+        val minute = time[1]
+        val amORpm = if (hour < 12) "AM" else "PM"
+        val newHour = if (hour == 0) 12 else if (hour > 12) hour - 12 else hour
+        return "$newHour:$minute $amORpm"
     }
 
     @SuppressLint("SetTextI18n")
@@ -154,7 +164,7 @@ class NewTaskActivity : AppCompatActivity() {
             val minute = calendar.get(Calendar.MINUTE)
 
             val timePickerDialog = TimePickerDialog(this, { _, selectedHour, selectedMinute ->
-                showTime.text = String.format("%02d:%02d", selectedHour, selectedMinute)
+                showTime.text = convertToAMPM("$selectedHour:$selectedMinute")
             }, hour, minute, false)
 
             timePickerDialog.show()

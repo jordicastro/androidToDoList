@@ -12,5 +12,6 @@ data class Task(
     @ColumnInfo(name="taskName") val taskName:String,
     @ColumnInfo(name="taskDescription") val taskDescription:String,
     @ColumnInfo(name="taskDateDue") val taskDateDue:String,
+    @ColumnInfo(name="taskTimeDue") val taskTimeDue:String,
     @ColumnInfo(name="taskStatus") val taskStatus:Boolean
 )

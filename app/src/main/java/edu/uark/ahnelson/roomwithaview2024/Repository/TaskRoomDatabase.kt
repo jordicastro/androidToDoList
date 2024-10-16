@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -12,7 +13,7 @@ import kotlinx.coroutines.launch
 // it contains the general methods to initialize and get the database
 
 // Annotates class to be a Room Database with a table (entity) of the Word class
-@Database(entities = arrayOf(Task::class), version = 1, exportSchema = false)
+@Database(entities = arrayOf(Task::class), version = 2, exportSchema = false)
 public abstract class TaskRoomDatabase : RoomDatabase() {
 
     abstract fun taskDao(): TaskDao
@@ -59,9 +60,9 @@ public abstract class TaskRoomDatabase : RoomDatabase() {
             // add sample tasks
             // tasks are of type
             // id, taskName, taskDescription, taskDueDate, taskStatus
-            var task = Task(null, "task1", "description1", "10/01/24", true)
+            var task = Task(null, "task1", "description1", "10/01/24", "1:23",true)
             taskDao.insert(task)
-            task = Task(null, "task2", "description2", "10/02/24", false)
+            task = Task(null, "task2", "description2", "10/02/24", "3:45", false)
             taskDao.insert(task)
 
             // TODO: Add your own words!
