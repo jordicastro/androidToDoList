@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import edu.uark.ahnelson.roomwithaview2024.R
+import edu.uark.ahnelson.roomwithaview2024.Repository.Task
 import edu.uark.ahnelson.roomwithaview2024.Repository.Word
 import edu.uark.ahnelson.roomwithaview2024.TasksApplication
 import edu.uark.ahnelson.roomwithaview2024.WordsApplication
@@ -23,16 +24,16 @@ import java.util.Calendar
 
 // this file handles creation, updating, and deleting of words
 
-class NewWordActivity : AppCompatActivity() {
+class NewTaskActivity : AppCompatActivity() {
 
     // initialize variables
     private lateinit var showDate: TextView
     private lateinit var buttonDate: Button
 
     private lateinit var editTextTask: EditText
-    private lateinit var word: Word
-    val newWordViewModel: NewWordViewModel by viewModels {
-        NewWordViewModelFactory((application as WordsApplication).repository)
+    private lateinit var task: Task
+    val newTaskViewModel: NewTaskViewModel by viewModels {
+        NewTaskViewModelFactory((application as TasksApplication).repository)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,15 +61,15 @@ class NewWordActivity : AppCompatActivity() {
         val id = intent.getIntExtra("EXTRA_ID",-1)
         //If it doesn't exist, create a new Word object
         if(id == -1){
-            word = Word(null,"")
+            task = Task(null,"", "", "", false)
         }else{
             //Otherwise, start the viewModel with the id
             //And begin observing the word to set the text in the
             //text view
-            newWordViewModel.start(id)
-            newWordViewModel.word.observe(this){
+            newTaskViewModel.start(id)
+            newTaskViewModel.task.observe(this){
                 if(it != null){
-                    editTextTask.setText(it.word)
+                    editTextTask.setText(it.taskName)
                 }
             }
         }
@@ -84,12 +85,12 @@ class NewWordActivity : AppCompatActivity() {
             } else {
                 //If text isn't empty, determine whether to update
                 //or insert
-                val word = editTextTask.text.toString()
-                if(newWordViewModel.word.value?.id == null){
-                    newWordViewModel.insert(Word(null,word))
+                val task = editTextTask.text.toString()
+                if(newTaskViewModel.task.value?.taskId == null){
+                    newTaskViewModel.insert(Task(null,task, showDate.text.toString(), "", false))
                     // newTaskViewModel.insert(Task(null, task))
                 }else{
-                    newWordViewModel.word.value?.let { it1 -> newWordViewModel.update(it1) }
+                    newTaskViewModel.task.value?.let { it1 -> newTaskViewModel.update(it1) }
                     // newTaskViewModel.task
                 }
                 //replyIntent.putExtra(EXTRA_REPLY, word)

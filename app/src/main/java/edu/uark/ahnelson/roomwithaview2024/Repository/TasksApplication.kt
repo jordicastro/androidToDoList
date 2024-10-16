@@ -1,6 +1,8 @@
 package edu.uark.ahnelson.roomwithaview2024
 
 import android.app.Application
+import edu.uark.ahnelson.roomwithaview2024.Repository.TaskRepository
+import edu.uark.ahnelson.roomwithaview2024.Repository.TaskRoomDatabase
 import edu.uark.ahnelson.roomwithaview2024.Repository.WordRepository
 import edu.uark.ahnelson.roomwithaview2024.Repository.WordRoomDatabase
 import kotlinx.coroutines.CoroutineScope
@@ -14,6 +16,6 @@ class TasksApplication : Application() {
     val applicationScope = CoroutineScope(SupervisorJob())
     // Using by lazy so the database and the repository are only created when they're needed
     // rather than when the application starts
-    val database by lazy { WordRoomDatabase.getDatabase(this,applicationScope) }
-    val repository by lazy { WordRepository(database.wordDao()) }
+    val database by lazy { TaskRoomDatabase.getDatabase(this,applicationScope) }
+    val repository by lazy { TaskRepository(database.taskDao()) }
 }
