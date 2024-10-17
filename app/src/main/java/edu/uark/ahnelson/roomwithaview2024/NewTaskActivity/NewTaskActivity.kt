@@ -121,7 +121,14 @@ class NewTaskActivity : AppCompatActivity() {
                 if(newTaskViewModel.task.value?.taskId == null){
                     newTaskViewModel.insert(Task(null, taskName, taskDescription, taskDueDate, taskDueTime, taskStatus ))
                 }else{
-                    newTaskViewModel.task.value?.let { it1 -> newTaskViewModel.update(it1) }
+                    newTaskViewModel.task.value?.let { it1: Task ->
+                        it1.taskName = taskName
+                        it1.taskDescription = taskDescription
+                        it1.taskDateDue = taskDueDate
+                        it1.taskTimeDue = taskDueTime
+                        it1.taskStatus = taskStatus
+                        newTaskViewModel.update(it1)
+                    }
                 }
                 //replyIntent.putExtra(EXTRA_REPLY, word)
                 setResult(Activity.RESULT_OK)

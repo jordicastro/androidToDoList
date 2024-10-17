@@ -8,10 +8,10 @@ import androidx.room.PrimaryKey
 // taskId, taskName, taskDescription, taskDueDate, taskStatus
 @Entity(tableName = "task_table")
 data class Task(
-    @PrimaryKey(autoGenerate = true) val taskId: Int?,
-    @ColumnInfo(name="taskName") val taskName:String,
-    @ColumnInfo(name="taskDescription") val taskDescription:String,
-    @ColumnInfo(name="taskDateDue") val taskDateDue:String,
-    @ColumnInfo(name="taskTimeDue") val taskTimeDue:String,
-    @ColumnInfo(name="taskStatus") val taskStatus:Boolean
+    @PrimaryKey(autoGenerate = true) var taskId: Int?,
+    @ColumnInfo(name="taskName") var taskName:String,
+    @ColumnInfo(name="taskDescription") var taskDescription:String,
+    @ColumnInfo(name="taskDateDue") var taskDateDue:String,
+    @ColumnInfo(name="taskTimeDue") var taskTimeDue:String,
+    @ColumnInfo(name="taskStatus") var taskStatus:Boolean
 )

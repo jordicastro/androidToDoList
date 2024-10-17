@@ -13,7 +13,7 @@ class NewTaskViewModel(private val repository: TaskRepository) : ViewModel() {
     /**
      * Launching a new coroutine to insert the data in a non-blocking way
      */
-    val _task = MutableLiveData<Task>().apply{value=null}
+    private val _task = MutableLiveData<Task>().apply{value=null}
     val task: LiveData<Task>
         get() = _task
 
@@ -31,6 +31,7 @@ class NewTaskViewModel(private val repository: TaskRepository) : ViewModel() {
 
     fun update(task: Task) = viewModelScope.launch {
         repository.update(task)
+        _task.value = task
     }
 }
 
