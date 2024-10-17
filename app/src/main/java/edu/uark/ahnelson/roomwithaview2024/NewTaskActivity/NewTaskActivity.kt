@@ -99,18 +99,32 @@ class NewTaskActivity : AppCompatActivity() {
                 }
             }
         }
+        // share button -> share task to other apps
+        val buttonShare = findViewById<Button>(R.id.button_share)
+        buttonShare.setOnClickListener {
+            val shareIntent = Intent().apply {
+                action = Intent.ACTION_SEND
+                putExtra(Intent.EXTRA_TEXT, "Task: ${editTextTask.text}\nDescription: ${editTextDescription.text}\nDue Date: ${showDate.text}\nDue Time: ${showTime.text}\nCompleted: ${checkboxTaskCompleted.isChecked}")
+                type = "text/plain"
+            }
+            startActivity(Intent.createChooser(shareIntent, "Share Task"))
+        }
 
-        //Get reference to the button
+        // back arrow button -> return to main activity
+        val buttonBack = findViewById<Button>(R.id.button_back)
+        buttonBack.setOnClickListener {
+            finish()
+        }
+
+        // save button -> save task, insert or update task into database
         val buttonSave = findViewById<Button>(R.id.button_save)
-        //Set the click listener functionality
-        //If text is empty, return with nothing
+
         buttonSave.setOnClickListener {
             val replyIntent = Intent()
             if (TextUtils.isEmpty(editTextTask.text)) {
                 setResult(Activity.RESULT_CANCELED, replyIntent)
             } else {
-                //If text isn't empty, determine whether to update
-                //or insert
+
                 val taskName = editTextTask.text.toString()
                 val taskDescription = editTextDescription.text.toString()
                 val taskDueDate = showDate.text.toString()
@@ -132,6 +146,8 @@ class NewTaskActivity : AppCompatActivity() {
                 }
                 //replyIntent.putExtra(EXTRA_REPLY, word)
                 setResult(Activity.RESULT_OK)
+
+                // share intent
             }
             //End the activity
             finish()

@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.CheckBox
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -28,6 +29,9 @@ Compares words with the WordsComparator
 // the onClick method is passed in from main activity.
 // when onBindViewHolder detects a click, it calls onItemClicked, defined in main activity as 'launchNewWordActivity'
 
+// CALLBACK FUNCTIONS
+    // onItemClicked
+    // onDeleteClicked
 class TaskListAdapter(
     val onItemClicked:(taskId:Int)->Unit,
     val onDeleteClicked:(task:Task)->Unit
@@ -73,6 +77,7 @@ class TaskListAdapter(
         private val textTaskName: TextView = itemView.findViewById(R.id.textTaskName)
         private val textTaskDue: TextView = itemView.findViewById(R.id.textTaskDue)
         private val buttonDeleteTask: Button = itemView.findViewById(R.id.ButtonDeleteTask)
+        private val checkboxTaskCompleted: CheckBox = itemView.findViewById(R.id.checkboxTaskCompleted)
 
 
         /**
@@ -82,6 +87,7 @@ class TaskListAdapter(
             if (task != null) {
                 textTaskName.text = task.taskName
                 textTaskDue.text = getDateAndTime(task.taskDateDue, task.taskTimeDue)
+                checkboxTaskCompleted.isChecked = task.taskStatus
 
                 buttonDeleteTask.setOnClickListener {
                     onDeleteClicked(task)
