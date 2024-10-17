@@ -2,6 +2,7 @@ package edu.uark.ahnelson.roomwithaview2024.MainActivity
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import edu.uark.ahnelson.roomwithaview2024.NewWordActivity.NewTaskActivity
 import edu.uark.ahnelson.roomwithaview2024.R
+import edu.uark.ahnelson.roomwithaview2024.Repository.Task
 import edu.uark.ahnelson.roomwithaview2024.TasksApplication
 
 // main activity class contains
@@ -24,6 +26,7 @@ class MainActivity : AppCompatActivity() {
 //        WordViewModelFactory((application as WordsApplication).repository)
 //    }
 
+    // ViewModel object to communicate between Activity and repository
     private val taskViewModel: TaskViewModel by viewModels {
         TaskViewModelFactory((application as TasksApplication).repository)
     }
@@ -95,7 +98,7 @@ class MainActivity : AppCompatActivity() {
         //Get reference to recyclerView object
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerview)
         //Create adapter class, passing the launchNewTaskActivity callback
-        val adapter = TaskListAdapter(this::launchNewTaskActivity)
+        val adapter = TaskListAdapter(this::launchNewTaskActivity, this::deleteTask)
         //Set the adapter for the recyclerView to the adapter object
         recyclerView.adapter = adapter
         //Set the recyclerview layout to be a linearLayoutManager with activity context
@@ -113,5 +116,10 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this@MainActivity, NewTaskActivity::class.java)
             startActivity(intent)
         }
+    }
+
+    private fun deleteTask(task: Task) {
+        taskViewModel.delete(task)
+
     }
 }

@@ -5,12 +5,17 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import edu.uark.ahnelson.roomwithaview2024.R
 import edu.uark.ahnelson.roomwithaview2024.Repository.Task
+import edu.uark.ahnelson.roomwithaview2024.TasksApplication
 
 /**
 WordListAdapter class
@@ -24,8 +29,10 @@ Compares words with the WordsComparator
 // when onBindViewHolder detects a click, it calls onItemClicked, defined in main activity as 'launchNewWordActivity'
 
 class TaskListAdapter(
-    val onItemClicked:(taskId:Int)->Unit)
-    : ListAdapter<Task, TaskListAdapter.TaskViewHolder>(TasksComparator()) {
+    val onItemClicked:(taskId:Int)->Unit,
+    val onDeleteClicked:(task:Task)->Unit
+    ) : ListAdapter<Task, TaskListAdapter.TaskViewHolder>(TasksComparator()) {
+
 
     /**
      * onCreateViewHolder creates the viewHolder object
@@ -34,7 +41,7 @@ class TaskListAdapter(
      * @param viewType the type of the view
      */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
-        return TaskViewHolder.create(parent)
+        return TaskViewHolder.create(parent, onDeleteClicked)
     }
 
     /**
@@ -60,28 +67,40 @@ class TaskListAdapter(
      * Responsible for creating the layouts and binding objects to views
      * @param itemView the View object to be bound
      */
-    class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class TaskViewHolder(itemView: View, private val onDeleteClicked: (task: Task) -> Unit) : RecyclerView.ViewHolder(itemView) {
 
-        //Reference to the textView object
-        private val taskItemView: TextView = itemView.findViewById(R.id.textView)
+        //Reference to the textTaskName, textTaskDue
+        private val textTaskName: TextView = itemView.findViewById(R.id.textTaskName)
+        private val textTaskDue: TextView = itemView.findViewById(R.id.textTaskDue)
+        private val buttonDeleteTask: Button = itemView.findViewById(R.id.ButtonDeleteTask)
+
 
         /**
          * bind binds a word object's data to views
          */
         fun bind(task: Task?) {
             if (task != null) {
-                taskItemView.text = task.taskName
+                textTaskName.text = task.taskName
+                textTaskDue.text = getDateAndTime(task.taskDateDue, task.taskTimeDue)
+
+                buttonDeleteTask.setOnClickListener {
+                    onDeleteClicked(task)
+                }
             }
+        }
+
+        private fun getDateAndTime(taskDateDue: String, taskTimeDue: String): CharSequence? {
+            return "$taskDateDue $taskTimeDue"
         }
 
         /**
          * create the view object
          */
         companion object {
-            fun create(parent: ViewGroup): TaskViewHolder {
+            fun create(parent: ViewGroup, onDeleteClicked: (task: Task) -> Unit): TaskViewHolder {
                 val view: View = LayoutInflater.from(parent.context)
                     .inflate(R.layout.recyclerview_item, parent, false)
-                return TaskViewHolder(view)
+                return TaskViewHolder(view, onDeleteClicked)
             }
         }
     }
