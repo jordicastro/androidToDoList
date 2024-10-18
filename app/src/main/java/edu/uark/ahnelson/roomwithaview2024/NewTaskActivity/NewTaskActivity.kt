@@ -2,8 +2,14 @@ package edu.uark.ahnelson.roomwithaview2024.NewWordActivity
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.AlarmManager
+import android.app.AlertDialog
 import android.app.DatePickerDialog
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
 import android.app.TimePickerDialog
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
@@ -15,12 +21,17 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NotificationCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import edu.uark.ahnelson.roomwithaview2024.Notifications.Notification
+import edu.uark.ahnelson.roomwithaview2024.Notifications.channelID
+import edu.uark.ahnelson.roomwithaview2024.Notifications.notificationId
 import edu.uark.ahnelson.roomwithaview2024.R
 import edu.uark.ahnelson.roomwithaview2024.Repository.Task
 import edu.uark.ahnelson.roomwithaview2024.TasksApplication
 import java.util.Calendar
+import java.util.Date
 
 // this file handles creation, updating, and deleting of words
 
@@ -131,7 +142,6 @@ class NewTaskActivity : AppCompatActivity() {
                 val taskDueTime = convertToAMPM(showTime.text.toString()).toString()
                 val taskStatus = checkboxTaskCompleted.isChecked
 
-
                 if(newTaskViewModel.task.value?.taskId == null){
                     newTaskViewModel.insert(Task(null, taskName, taskDescription, taskDueDate, taskDueTime, taskStatus ))
                 }else{
@@ -147,12 +157,119 @@ class NewTaskActivity : AppCompatActivity() {
                 //replyIntent.putExtra(EXTRA_REPLY, word)
                 setResult(Activity.RESULT_OK)
 
-                // share intent
+                // create notification
+                createNotification(taskName, taskDescription, taskDueDate, taskDueTime)
+
+
             }
             //End the activity
             finish()
         }
 
+    }
+
+    private fun createNotification(taskName: String, taskDescription: String, taskDueDate: String, taskDueTime: String) {
+        // register app's notification channel:
+        createNotificationChannel()
+        scheduleNotification(taskName, taskDescription, taskDueDate, taskDueTime)
+
+//        val CHANNEL_ID = "Task Notification Channel"
+//        var builder = NotificationCompat.Builder(this, CHANNEL_ID)
+//            .setSmallIcon(R.drawable.ic_baseline_notifications_24)
+//            .setContentTitle("Task Reminder")
+//            .setContentText("Task: $taskName\nDescription: $taskDescription\nDue Date: $taskDueDate\nDue Time: $taskDueTime")
+//            .setPriority(NotificationCompat.PRIORITY_HIGH)
+    }
+
+    private fun scheduleNotification(taskName: String, taskDescription: String, taskDueDate: String, taskDueTime: String) {
+        val intent = Intent(applicationContext, Notification::class.java)
+        val title = "Task Reminder"
+        val message = "Task: $taskName\nDescription: $taskDescription\nDue Date: $taskDueDate\nDue Time: $taskDueTime"
+        intent.putExtra("titleExtra", title)
+        intent.putExtra("messageExtra", message)
+
+        val pendingIntent = PendingIntent.getBroadcast(
+            applicationContext,
+            notificationId,
+            intent,
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+
+        )
+
+        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+
+        val time = getTime(taskDueDate, taskDueTime)
+        alarmManager.set(AlarmManager.RTC_WAKEUP, time as Long, pendingIntent)
+        // showAlert(time, title, message)
+    }
+
+    private fun showAlert(time: Long, title: String, message: String) {
+        val date = Date(time)
+
+        AlertDialog.Builder(this)
+            .setTitle("Notification Scheduled")
+            .setMessage("Notification scheduled for ${date.toString()}\n$title\n$message")
+            .setPositiveButton("OK") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
+    }
+
+    private fun getTime(taskDueDate: String, taskDueTime: String): Any {
+        // taskDueTime is of the form: HH:MM AM/PM
+        // taskDueDate is of the form: MM/DD/YYYY
+
+        // convert taskDueTime to 24 hour format
+        val twelveHourDueTime = timeTo24Hour(taskDueTime)
+        val time = twelveHourDueTime.split(":")
+        val hour = time[0].toInt()
+        val minute = time[1].toInt()
+        val date = taskDueDate.split("/")
+        val month = date[0].toInt()
+        val day = date[1].toInt()
+        val year = date[2].toInt()
+
+        val calendar = Calendar.getInstance()
+        calendar.set(year, month, day, hour, minute)
+        return calendar.timeInMillis
+    }
+
+    private fun timeTo24Hour(taskDueTime: String): String {
+        // taskDueTime is of the form: HH:MM AM/PM
+        val time = taskDueTime.split(":")
+        val hour = time[0].toInt()
+        val minute = time[1].split(" ")[0].toInt()
+        val amORpm = time[1].split(" ")[1]
+
+        if (amORpm == "AM") {
+            if (hour == 12) {
+                // 12 AM -> 00:00
+                return "00:00"
+            } else {
+                // 1 AM -> 01:00
+                return "$hour:$minute"
+            }
+        } else {
+            if (hour == 12) {
+                // 12 PM -> 12:00
+                return "$hour:$minute"
+            } else {
+                // 1 PM -> 13:00
+                return "${hour + 12}:$minute"
+            }
+
+        }
+
+    }
+
+    private fun createNotificationChannel() {
+        val name = "Notif Channel"
+        val desc = "A description of the channel"
+        val importance = NotificationManager.IMPORTANCE_DEFAULT
+        val channel = NotificationChannel(channelID, name, importance)
+        channel.description = desc
+        val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.createNotificationChannel(channel)
     }
 
     private fun convertToAMPM(taskTimeDue: String): CharSequence? {
@@ -180,6 +297,7 @@ class NewTaskActivity : AppCompatActivity() {
             val day = calendar.get(Calendar.DAY_OF_MONTH)
 
             val datePickerDialog = DatePickerDialog(this, { _, selectedYear, selectedMonth, selectedDay ->
+                val correctMonth = selectedMonth + 1
                 showDate.text = "$selectedMonth/${selectedDay}/$selectedYear"
             }, year, month, day)
 

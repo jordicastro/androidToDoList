@@ -38,7 +38,7 @@ android {
 
 dependencies {
 
-
+//    implementation(libs.androidx.core.ktx.v220)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.activity.ktx)
