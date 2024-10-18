@@ -2,7 +2,6 @@ package edu.uark.ahnelson.roomwithaview2024.MainActivity
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -98,7 +97,7 @@ class MainActivity : AppCompatActivity() {
         //Get reference to recyclerView object
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerview)
         //Create adapter class, passing the launchNewTaskActivity callback
-        val adapter = TaskListAdapter(this::launchNewTaskActivity, this::deleteTask)
+        val adapter = TaskListAdapter(this::launchNewTaskActivity, this::deleteTask, this::updateCheckBox)
         //Set the adapter for the recyclerView to the adapter object
         recyclerView.adapter = adapter
         //Set the recyclerview layout to be a linearLayoutManager with activity context
@@ -122,4 +121,9 @@ class MainActivity : AppCompatActivity() {
         taskViewModel.delete(task)
 
     }
+
+    private fun updateCheckBox(task: Task) {
+        taskViewModel.update(task)
+    }
+
 }

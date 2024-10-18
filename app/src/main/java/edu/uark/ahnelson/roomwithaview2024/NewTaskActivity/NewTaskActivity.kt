@@ -95,7 +95,7 @@ class NewTaskActivity : AppCompatActivity() {
                     showTime.text = convertToAMPM(it.taskTimeDue)
 
                     // check box on or off
-                    checkboxTaskCompleted.isChecked = !it.taskStatus
+                    checkboxTaskCompleted.isChecked = it.taskStatus
                 }
             }
         }
@@ -128,7 +128,7 @@ class NewTaskActivity : AppCompatActivity() {
                 val taskName = editTextTask.text.toString()
                 val taskDescription = editTextDescription.text.toString()
                 val taskDueDate = showDate.text.toString()
-                val taskDueTime = showTime.text.toString()
+                val taskDueTime = convertToAMPM(showTime.text.toString()).toString()
                 val taskStatus = checkboxTaskCompleted.isChecked
 
 
@@ -156,6 +156,10 @@ class NewTaskActivity : AppCompatActivity() {
     }
 
     private fun convertToAMPM(taskTimeDue: String): CharSequence? {
+        // check to see if time was already converted (contains AM | PM)
+        if (taskTimeDue.contains("AM") || taskTimeDue.contains("PM")) {
+            return taskTimeDue
+        }
         // taskTimeDue is in 24 hour format
         // convert to 12 hour format
         val time = taskTimeDue.split(":")
@@ -176,7 +180,7 @@ class NewTaskActivity : AppCompatActivity() {
             val day = calendar.get(Calendar.DAY_OF_MONTH)
 
             val datePickerDialog = DatePickerDialog(this, { _, selectedYear, selectedMonth, selectedDay ->
-                showDate.text = "$selectedMonth/${selectedDay + 1}/$selectedYear"
+                showDate.text = "$selectedMonth/${selectedDay}/$selectedYear"
             }, year, month, day)
 
             datePickerDialog.show()
